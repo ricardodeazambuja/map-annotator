@@ -74,7 +74,7 @@ def getTiles(west, south, east, north, zoomLevel):
         res = mc.children(lst_tile, zoom=zoomLevel)
     except mc.InvalidZoomError as err:
         raise mc.InvalidZoomError(lst_tile, err.args[0])
-    
+
     return res
 
 
@@ -93,7 +93,7 @@ def getFusedImg(west, south, east, north, zoomLevel,
     tiles = getTiles(west, south, east, north, zoomLevel)
     assert len(tiles) <= maxTiles, f"You are trying to ask for more than {maxTiles} tiles, are you sure?"
     size = int(math.sqrt(len(tiles)))
-    x,y,z = tiles[0]
+    x, y, z = tiles[0]
     totalSize = size*256  # images (tiles) from Bing are 256x256
     finaImg = Image.new('RGB', (totalSize, totalSize))
     for i in range(size):
