@@ -1,3 +1,5 @@
+import random
+import time
 import math
 from io import BytesIO
 
@@ -86,7 +88,8 @@ def getMask(west, south, east, north, imgSize, tags={"building": True}):
     return Image.fromarray(img*255)
 
 
-def getFusedImg(west, south, east, north, zoomLevel, bing_key, maxTiles=32):
+def getFusedImg(west, south, east, north, zoomLevel,
+                bing_key, maxTiles=32, minT=0.05):
     tiles = getTiles(west, south, east, north, zoomLevel)
     assert len(tiles) <= maxTiles, f"You are trying to ask for more than {maxTiles} tiles, are you sure?"
     size = int(math.sqrt(len(tiles)))
@@ -97,6 +100,7 @@ def getFusedImg(west, south, east, north, zoomLevel, bing_key, maxTiles=32):
         for j in range(size):
             tmpLngLat = mc.ul(mc.Tile(x+i, y+j, z))
             tmpImg = getAerialImage(tmpLngLat.lat, tmpLngLat.lng, z, bing_key)
+            time.sleep(minT+random.random()*minT)
             finaImg.paste(tmpImg, (256*i, 256*j))
 
     return finaImg
